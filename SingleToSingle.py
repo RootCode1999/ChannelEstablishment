@@ -32,7 +32,7 @@ import math
 # from turtle import delay, st
 # import torch
 import numpy as np
-import config
+import config, funcs
 '''
 对于定向天线，增益值会随着与天线主波束方向的偏离而降低。
 合理的增益值可能从几dBi到20dBi或更高，具体取决于天线的设计和使用场景。
@@ -56,7 +56,7 @@ def loadDirectionalDiagram():
     array_2d = df.values
     return array_2d
 
-
+### 计算增益
 def calculateGain(Hdegree,Vdegree):
     '''
     Hdegree: 水平角度 [-180,180]
@@ -138,13 +138,14 @@ def FunctionForLos(x1,x2,y1,y2,z1,z2):
     ans += parameter1*temp3[0][0]
     return ans
 
-def FunctionForNlos(azimuthDegree,elevationDegree):
+def FunctionForNlos(cluster):
         ## 2*1的转置矩阵
         ### 随机生成1到20的数
         ans = 0.0
         for i in range(10):
-            for j in range(10):
+            for j in range(1):
                 ### 随机生成浮点数
+                ### 获取两点
                 num1= np.random.uniform(1,20)
                 num2 = np.random.uniform(1,20)
                 matrixNlos_1 = np.transpose(np.array([[num1],[num2]]))
@@ -232,6 +233,8 @@ z1=0
 x2=2*math.sqrt(2)
 y2=2*math.sqrt(2)
 z2=5
+
+cluster = funcs.randomCluster(x1,x2,y1,y2,z1,z2)
 
 config.Ephi = loadDirectionalDiagram()
 # Gain = calculateGain(0,90)
