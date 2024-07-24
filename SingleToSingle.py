@@ -232,8 +232,8 @@ y2=2*math.sqrt(2)
 z2=5
 
 config.Ephi = loadDirectionalDiagram()
-Gain = caculateGain(0,90)
-breakpoint = 1
+# Gain = caculateGain(0,90)
+# breakpoint = 1
 def caculateDegree(x1,x2,y1,y2,z1,z2):
     # 计算两个点的水平方向（东-北方向）
     dx = x2 - x1
