@@ -29,9 +29,10 @@ H 表示发射端的每个发射天线和接收端的每个接收天线之间的
 
 from calendar import c
 import math
-from turtle import delay, st
+# from turtle import delay, st
 # import torch
 import numpy as np
+import config
 '''
 对于定向天线，增益值会随着与天线主波束方向的偏离而降低。
 合理的增益值可能从几dBi到20dBi或更高，具体取决于天线的设计和使用场景。
@@ -44,6 +45,32 @@ M_nt = 5
 ## 载波频率
 f_c = 5
 
+import pandas as pd
+### 加载方向图
+def loadDirectionalDiagram():
+    # 替换为你的Excel文件路径
+    excel_path = 'Ephi.xlsx'
+    # 使用pandas的read_excel函数读取Excel文件
+    df = pd.read_excel(excel_path)
+    # 将DataFrame转换为二维numpy数组
+    array_2d = df.values
+    return array_2d
+
+
+def caculateGain(Hdegree,Vdegree):
+    '''
+    Hdegree: 水平角度 [-180,180]
+    Vdegree: 垂直角度 [-90,90]
+    '''
+    # 读取方向图
+    Ephi = config.Ephi
+    shape = Ephi.shape
+    # 计算方向图的水平角度和垂直角度
+    Hindex = round((Hdegree+180)/(360/72))
+    Vdegree = round((Vdegree+90)/(180/36))
+    # 读取方向图的增益值
+    gain = Ephi[Vdegree][Hindex]
+    return gain
 
 def FunctionForLos(x1,x2,y1,y2,z1,z2):
     azimuth_degrees_p,azimuth_degrees_q,\
@@ -204,6 +231,9 @@ x2=2*math.sqrt(2)
 y2=2*math.sqrt(2)
 z2=5
 
+config.Ephi = loadDirectionalDiagram()
+Gain = caculateGain(0,90)
+breakpoint = 1
 def caculateDegree(x1,x2,y1,y2,z1,z2):
     # 计算两个点的水平方向（东-北方向）
     dx = x2 - x1
