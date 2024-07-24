@@ -89,8 +89,8 @@ for i in range(N_qpt):
         # print(f_r.shape)
         # print(f_r)
 
-        # caculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
-        # print(caculateMatrix1)
+        # calculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
+        # print(calculateMatrix1)
 
         num1= np.random.randint(1,20)
         num2 = np.random.randint(1,20)

@@ -57,7 +57,7 @@ def loadDirectionalDiagram():
     return array_2d
 
 
-def caculateGain(Hdegree,Vdegree):
+def calculateGain(Hdegree,Vdegree):
     '''
     Hdegree: 水平角度 [-180,180]
     Vdegree: 垂直角度 [-90,90]
@@ -75,10 +75,11 @@ def caculateGain(Hdegree,Vdegree):
 def FunctionForLos(x1,x2,y1,y2,z1,z2):
     azimuth_degrees_p,azimuth_degrees_q,\
         elevation_degrees_p,evalution_degrees_q \
-            = caculateDegree(x1,x2,y1,y2,z1,z2)
+            = calculateDegree(x1,x2,y1,y2,z1,z2)
     ans = 0.0
-    num1= np.random.uniform(1,20)
-    num2 = np.random.uniform(1,20)
+    gain = calculateGain(azimuth_degrees_q,evalution_degrees_q)
+    num1= gain * abs(math.cos(evalution_degrees_q))
+    num2 = gain * abs(math.sin(evalution_degrees_q))
     matrixLos_1 = np.transpose(np.array([[num1],[num2]]))
     # print(matrixNlos_1.shape)
     # print(matrixNlos_1)
@@ -115,11 +116,12 @@ def FunctionForLos(x1,x2,y1,y2,z1,z2):
     # print(f_r.shape)
     # print(f_r)
 
-    # caculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
-    # print(caculateMatrix1)
+    # calculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
+    # print(calculateMatrix1)
 
-    num1= np.random.uniform(1,20)
-    num2 = np.random.uniform(1,20)
+    gain = calculateGain(azimuth_degrees_p,elevation_degrees_p)
+    num1= gain * abs(math.cos(elevation_degrees_p))
+    num2 = gain * abs(math.sin(elevation_degrees_p))
     matrixNlos_3 = np.array([[num1],[num2]])
 
     ### 生成1到2的随机数(us) 距离除以光速
@@ -184,8 +186,8 @@ def FunctionForNlos(azimuthDegree,elevationDegree):
                 # print(f_r.shape)
                 # print(f_r)
 
-                # caculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
-                # print(caculateMatrix1)
+                # calculateMatrix1 = np.dot(matrixNlos_1,matrixNlos_2)
+                # print(calculateMatrix1)
 
                 num1= np.random.uniform(1,20)
                 num2 = np.random.uniform(1,20)
@@ -232,9 +234,9 @@ y2=2*math.sqrt(2)
 z2=5
 
 config.Ephi = loadDirectionalDiagram()
-# Gain = caculateGain(0,90)
+# Gain = calculateGain(0,90)
 # breakpoint = 1
-def caculateDegree(x1,x2,y1,y2,z1,z2):
+def calculateDegree(x1,x2,y1,y2,z1,z2):
     # 计算两个点的水平方向（东-北方向）
     dx = x2 - x1
     dy = y2 - y1
@@ -259,15 +261,15 @@ def caculateDegree(x1,x2,y1,y2,z1,z2):
 
     return azimuth_degrees_p,azimuth_degrees_q,elevation_degrees_p,evalution_degrees_q
 
-# 生成第一个点的坐标
-x1 = random.uniform(-10, 10)  # x坐标在-10到10之间
-y1 = random.uniform(-10, 10)  # y坐标在-10到10之间
-z1 = random.uniform(-10, 10)  # z坐标在-10到10之间
+# # 生成第一个点的坐标
+# x1 = random.uniform(-10, 10)  # x坐标在-10到10之间
+# y1 = random.uniform(-10, 10)  # y坐标在-10到10之间
+# z1 = random.uniform(-10, 10)  # z坐标在-10到10之间
 
-# 生成第二个点的坐标
-x2 = random.uniform(-10, 10)  # x坐标在-10到10之间
-y2 = random.uniform(-10, 10)  # y坐标在-10到10之间
-z2 = random.uniform(-10, 10)  # z坐标在-10到10之间
+# # 生成第二个点的坐标
+# x2 = random.uniform(-10, 10)  # x坐标在-10到10之间
+# y2 = random.uniform(-10, 10)  # y坐标在-10到10之间
+# z2 = random.uniform(-10, 10)  # z坐标在-10到10之间
 
 HLos = FunctionForLos(x1,x2,y1,y2,z1,z2)
 print("HLos:",HLos)
